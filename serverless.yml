@@ -1,0 +1,75 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: ayasamind
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: HTTPAPI
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-northeast-1
+  environment:
+    DYNAMODB_TABLE_JOBS: JobsTable
+    DYNAMODB_TABLE_APPLICATIONS: ApplicationsTable
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Scan
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_JOBS}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_APPLICATIONS}
+
+functions:
+  listJobs:
+    handler: handler.listJobs
+    events:
+      - http:
+          path: jobs
+          method: get
+          cors: true
+  listApplications:
+    handler: handler.listApplications
+    events:
+      - http:
+          path: applications
+          method: get
+          cors: true
+  applyJob:
+    handler: handler.applyJob
+    events:
+      - http:
+          path: jobs/apply
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    JobsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_JOBS}
+        AttributeDefinitions:
+          - AttributeName: jobId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: jobId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    ApplicationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_APPLICATIONS}
+        AttributeDefinitions:
+          - AttributeName: applicationId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: applicationId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
