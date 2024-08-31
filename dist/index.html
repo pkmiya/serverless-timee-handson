@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>アルバイトマッチングアプリ</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>アルバイト募集一覧</h1>
-        <ul id="job-list"></ul>
+      <h1>アルバイト募集一覧</h1>
+      <ul id="job-list"></ul>
     </div>
 
     <div class="apply-container">
-        <h2>応募フォーム</h2>
-        <form id="apply-form">
-            <label for="name">名前:</label>
-            <input type="text" id="name" required>
+      <h2>応募フォーム</h2>
+      <form id="apply-form">
+        <label for="name">名前:</label>
+        <input type="text" id="name" required />
 
-            <label for="job-id">アルバイトID:</label>
-            <input type="text" id="job-id" required>
+        <label for="job-select">アルバイト:</label>
+        <select id="job-select" required>
+          <option value="">選択してください</option>
+        </select>
 
-            <button type="submit">応募する</button>
-        </form>
-        <p id="response-message"></p>
+        <button type="submit">応募する</button>
+      </form>
+      <p id="response-message"></p>
     </div>
 
     <div class="container">
-        <h1>申し込み一覧</h1>
-        <ul id="application-list"></ul>
+      <h1>申し込み一覧</h1>
+      <ul id="application-list"></ul>
     </div>
 
     <script src="scripts.js"></script>
-</body>
+  </body>
 </html>
